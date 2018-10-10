@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>珠峰培训</title>
+</head>
+<body>
+    <div id="app">珠峰培训</div>
+</body>
+</html>
+<script>
+    var ary = [3,34,55,7,6786,98,45,23,3];
+    // 用双for 循环就可以 ；需要注意数组塌陷的问题；
+    // 利用对象；对象的属性名不能重复；
+
+    /*实现一个LazyMan，可以按照以下方式调用:
+        1) LazyMan(“Hank”)输出:
+           Hi! This is Hank!
+
+        2) LazyMan(“Hank”).sleep(10).eat(“dinner”)输出
+           Hi! This is Hank!
+           //等待10秒..
+           Wake up after 10
+           Eat dinner~
+
+        3) LazyMan(“Hank”).eat(“dinner”).eat(“supper”)输出
+           Hi This is Hank!
+           Eat dinner~
+           Eat supper~
+
+        4) LazyMan(“Hank”).sleepFirst(5).eat(“supper”)输出
+            //等待5秒
+            Wake up after 5
+            Hi This is Hank!
+            Eat supper
+        */
+    /*
+    * 看到  第二步的要求时  我们确定了 要用原型模式写这个需求
+    * LazyMan 执行  后边能直接调用链式写法；我们知道让lazyMan 的返回结果是个 类的实例；
+    * 创造了一个 Man实例 。sleep ,eat sleepFirst 都是 Man原型上的方法
+    *
+    * 上边的这个写法 已经能实现 同步的两个eat,但是不能实现异步的sleep;
+    *
+    * 我们想处理异步， 想到用 事件池 去把 吃睡 这些函数都放到 事件池中；
+    * 让事件池中的函数 挨个执行（上一个事件执行完成 再去执行下一个事件）
+    *
+    * 我们创造了一个 this.ary 去存储这些事件； 存储的这些事件 怎么执行呢？
+    * 我们有创造一个 next 函数；  next函数执行事件池中的第一个函数；
+    *
+    * 我们让next函数同步执行时，发现 后边的两个eat根本没有放到事件池中；因为同步还没有执行到eat;
+    * 所以在这里 我们用的异步 处理next执行 ；因为异步有个特点就是 需要所有同步代码执行完毕之后 才会执行异步；
+    *
+    * 走到现在 我们已经能处理两个 eat 的执行了；前提 我们要在eat执行完毕时 接着调用 next函数；
+    *
+    * 下边还剩下两个异步函数；  一个时 sleep  一个时 sleepFirst
+    * sleep ：用一个  fn 把 setTimeout 包到函数里边；把fn 放到(push)事件池中；
+    * setTimeout执行时  ，我们紧接着调用了 next
+    * sleepFirst 用一个  fn 把 setTimeout 包到函数里边；把fn 放到(unshift)事件池中；setTimeout执行时  ，我们紧接着调用了 next
+    *
+    * */
+    function Man(name) {
+        this.ary = [];
+        let that = this;
+        function say(){
+            console.log(`HI , this is ${name}`);
+            console.log(that.ary);
+            that.next();
+        }
+        this.ary.push(say);
+        // this.next();
+        setTimeout(()=>{
+            this.next();
+        },10)
+        // 直接执行 会导致 后边的两个函数没有push到ary中；需要我们用异步解决这个问题；异步有个特点就是同步代码执行完成之前 异步代码不会执行
+    };
+    Man.prototype.next = function(){
+        let fn = this.ary.shift();
+        fn && fn();// fn 存在； 才 让fn执行
+    };
+    Man.prototype.sleep = function (n) {
+        let that = this;
+        function fn(){
+            setTimeout(()=>{
+                console.log(`Wake Up after ${n} s`);
+                that.next();
+            },n*1000);
+        }
+        this.ary.push(fn);
+        return this;
+    };
+    Man.prototype.eat = function (str) {
+        let that = this;
+        function fn() {
+            console.log(`Eat ${str} ~`);
+            that.next();
+        }
+        this.ary.push(fn);
+        return this;
+    };
+    Man.prototype.sleepFirst = function (n) {
+        let that = this;
+        function fn() {
+            setTimeout(()=>{
+                console.log(`Wake up after ${n} s`);
+                that.next();
+            },n*1000)
+        }
+        this.ary.unshift(fn);
+        return this;
+    };
+    function LazyMan(name) {
+        return new Man(name)
+    }
+    let qqq = LazyMan('Hank').eat('dinner').eat('supper');
+    /*
+    * 第二步  实现链式写法，  我们 需要把函数放到某个类的原形上
+    * */
+
+
+
+    //把 obj 中的所有的name属性值 都放到一个数组中
+    let obj = {
+        a: {
+            name: "我是a",
+            age: 5,
+            b: {
+                name: "我是a中的b",
+                age: 2,
+                c: {
+                    name: "我是a中的c",
+                    sex: 0,
+                    b: {
+                        name: "我是a中的d"
+                    }
+                }
+            }
+        },
+        b: {
+            c: {
+                d: {
+                    name: "我是b中的d",
+                    age: 10
+                }
+            }
+        },
+        name:'dddd',
+    };
+    let obj2 = JSON.parse(JSON.stringify(obj));
+
+    let arr = [];
+    function getName(obj) {
+        // 使用递归  需要我们把 边界判断处理好；
+        // 对于这个需求来说  只要看 传进来的参数是不是对象即可，不是对象 ；我们直接return
+        // 是对象 接着执行函数即可
+        if(typeof obj !== 'object')return;
+        for(let k in obj){
+            if(k == 'name'){
+                arr.push(obj[k])
+            }else {
+                getName(obj[k])
+            }
+        }
+    }
+    console.log(arr);
+    // ary --> ['我是a','我是a2','我是a3']
+
+
+</script>  
