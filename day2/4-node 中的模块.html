@@ -9,6 +9,12 @@
 <h1>珠峰培训</h1>
 </body>
 </html>
+<!--<script src="js文件夹/b.js"></script>-->
+
+<script src="js文件夹/es6module/a.js" type="module"></script>
+<!--若想用es6的模块引入和导出 需要我们加上 type = 'module'-->
+
+<!--<script src="js文件夹/es6module/b.js"></script>-->
 <script>
     /*
     * node 中的模块分为三类 ： 内置模块  第三方模块  自定义模块
@@ -16,5 +22,53 @@
     * 对于我们来说  一个JS文件  就是一个模块；
     * commonJS规范   AMD  CMD
     * node 是遵循 commonJS规范的
+    * */
+
+
+    /*
+    * 自定义模块的 导入和导出
+    *
+    *  导入 ：let 变量 = require(自定义模块的相对路径)
+    *  module.exports === exports  ---> {}
+    *  导出： module.exports.name = 'zf' ---> {name:'zf'}
+    *        module.exports = {name:'zf'} ---> {name:'zf'}
+    *        以上两种方式的导出 结果是一样的
+    *        exports = {name:'zf'} 这种写法是不起作用的
+    *        module.exports 还支持直接用 值类型 覆盖 -->module.exports = 123;
+    *
+    *  一个模块中 有 require module __dirname __filename exports;
+    *  这些只有在node中执行时才是被定义过的变量；在浏览器中执行时 是没有这些变量的
+    *
+    * */
+
+    /*
+    * 模块的导入和导出  目前一共有两种方式
+    * 第一种  是 node 的导入导出
+    * node 导入  let 变量 = require(要导入模块的路径)
+    * node 导出  module.exports 和 exports 这两种方式导出；第一种方式 支持地址覆盖 也 支持 用值类型覆盖； 第二种方式只能老实的用 打点方式；
+    * node 方式的导入和导出 只能在node环境中执行；不能再浏览器环境下执行
+    *
+    *
+    * 第二种  是 es6的模块导入和导出
+    * 引入入口文件（a.js） 需要在script标签上加上 type="module" 这个属性
+    * es6 导入 有三种方式
+    *   1、import {变量名} from './b.js'; 这个变量名 必须 跟导出的属性名保持一致
+    *   这种导入方式需要的 导出方式是  export {obj2:obj}
+    *
+    *   2、import 自定义变量名 from './b.js';
+    *   这种导入方式需要的 导出方式是  export default obj(变量名)
+    *
+    *   3、import * as 自定义变量名 from './b.js';
+    *   这种导入方式 是把 b 中的所有的导出 都放到自定义变量名的对象中；
+    *
+    *   4、import 自定义变量名,{obj,str} from './b.js';
+    *   这种导入方式需要的导出方式是  《export default 变量》+《export {obj,str,num}》
+    * 以上是es6 的导入和导出  需要在浏览器环境才能运行； 不能在 node 环境下运行
+    *
+    *
+    *
+    * node 的 module.exports 导出 可以写多个吗？ 可以 ，只不过只有最下边的起作用
+    * es6 的 export  导出 可以写多个吗？  可以 ，并且都起作用；
+    *
     * */
 </script>  

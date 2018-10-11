@@ -32,7 +32,9 @@
 
 
 
+console.log(222);
 // require('./a.js');// 只是把 a.js 文件执行了；不需要他的返回结果；
 let qqq = require('./a');//  .js 的后缀可以省略
-console.log(qqq);
+// console.log(qqq);
 
+console.log(333);
