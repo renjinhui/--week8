@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <!---->
+</body>
+</html>
+<script>
+    /*
+    * git config --global user.name  用户名
+    * git config --global user.email 用户邮箱
+    * git config --list  查看用户信息
+    *
+    * git clone 远程仓库地址
+    * 使用 git clone ;可以省略 git init、 git remote add
+    * git push 和 git pull 时都可以不加后边的 桥梁和分支
+    *
+    *
+    *
+    *
+    *
+    * git init  把当前文件夹变成一个 git 仓库
+    * git status 查看当前的修改状态 红色字体代表在工作去的修改还没有提交到缓存区；绿色字体代表执行过 git add ；已经把代码上传到缓存区了
+    * git add . 把当前文件夹下所有的修改都提交到缓存区
+    * git add 文件（夹）名  只上传当前文件或文件夹
+    *
+    * git commit -m '备注信息'  把代码从 缓存区 上传到 历史区
+    *
+    * 以上操作都是在本地仓库操作
+    *
+    * git remote -v  // 查看当前有哪些桥梁
+    * git remote add 桥梁名  远程仓库地址 // 把本地库和远程库用自定义的桥梁链接起来
+    * git push 桥梁名  分支名 // 把 本地库 历史区 的代码 提交到 远程库
+    *
+    * git pull 桥梁名  分支名 // 把 远程库 的代码 更新到本地；
+    * 执行 git pull 时需要注意有没有 conflict ；若有 要先去解决这些冲突；这些冲突时需要手动解决的；
+    *
+    * git checkout . // 用缓存区的代码覆盖工作区
+    *
+    * git reset --hard （版本号） // 不写版本号 默认回退到上个版本； 写上版本号 回退到指定版本；  用 历史区 的代码覆盖 缓存区 和 工作区；
+    *
+    * git log // 查看历史版本的详细信息
+    * git log -3 // 查看最近的3个版本的详细信息
+    *
+    * git reflog //查看历史版本的简要信息；这里显示的版本号是 真正版本号的前7位；
+    * git diff // 查看工作区和缓存区的区别
+    * git diff --cached // 查看缓存区和历史区的区别
+    *
+    * git commit -a -m '备注' // 前提是 之前用过 git add . 和 git commit -m '备注'
+    *
+    *
+    * git branch // 查看当前库的所有分支
+    * git branch 分支名 // 在本地库新切一个分支; 这个命令在哪个分支执行；那么新产生的分支的内容就和当前分支是一模一样的
+    * git branch dev/181031
+    *
+    * */
+</script>
